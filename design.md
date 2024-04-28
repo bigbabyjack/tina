@@ -1,5 +1,11 @@
 # tina: the terminal agent
 
+## Dev Plan 
+1. design classes: UserInput, QueryResponse, LanguageModel
+2. design contracts between classes
+3. single-turn response
+
+
 ## Introduction
 **tina** is a text-based terminal agent. It can serve a range of utilities from the command line.
 
@@ -22,5 +28,4 @@ class QueryResponse:
 ```
 
 As **tina** evolves, this will get more complicated.
-
 
