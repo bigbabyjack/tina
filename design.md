@@ -5,10 +5,10 @@ Image of current design plan:
 ![tina](./design_01.png)
 
 ## Dev Plan 
-1. design classes: UserInput, QueryResponse, LanguageModel
-2. design contracts between classes
-3. single-turn response
-
+- Add a query parser
+- Add a response parser
+- set up API
+- test with constants
 
 ## Introduction
 **tina** is a text-based terminal agent. It can serve a range of utilities from the command line.
