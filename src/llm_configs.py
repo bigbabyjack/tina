@@ -1,18 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-# Set the URL for the LLaMA model's chat API endpoint
-url = "http://127.0.0.1:11434/api/generate"
-
-# Set the headers for the request
-
-# Set the data for the chat API request
-data = {
-    "model": "llama3:8b",
-    "prompt": "I am making a CLI tool that uses Llama3 as an agent for carrying out different actions based on the user text input.",
-    "stream": False,
-}
-
 
 class LLMAgents(StrEnum):
     LLAMA3_8B = "llama3:8b"
@@ -25,7 +13,7 @@ class LLMConfig:
     headers: dict
     options: dict
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "model_name": self.model_name,
             "url": self.url,
