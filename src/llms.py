@@ -11,6 +11,22 @@ class AbstractLLM(ABC):
 
 
 class LLM(AbstractLLM):
+    """
+    Documentation for LLM:
+    The LLM class is an abstract class that defines the interface for interacting with an LLM.
+
+    Example:
+    class MyLLM(LLM):
+        def invoke(self, query: UserInput) -> QueryResponse:
+            return QueryResponse(response="hello world")
+
+    my_llm = MyLLM()
+    query_response = my_llm.invoke(UserInput(query="hello world"))
+    print(query_response.response)  # Output: "hello world"
+
+    The invoke() method should be implemented by subclasses to interact with the LLM and return the response.
+    """
+
     def __init__(self, config: LLMConfig):
         self.config = config
 
@@ -19,6 +35,11 @@ class LLM(AbstractLLM):
 
 
 class LLama3_8B(LLM):
+    """
+    Documentation for LLama3_8B:
+    The LLama3_8B class is an implementation of the LLM class that uses the LLaMA3 8B model.
+    """
+
     def __init__(self, config: LLMConfig):
         self.config = config
 
@@ -33,6 +54,25 @@ class AbstractLLMFactory(ABC):
 
 
 class LLMFactory(AbstractLLMFactory):
+    """
+    Documentation for LLMFactory:
+    The LLMFactory class is an abstract class that defines the interface for creating LLMs.
+
+    Example:
+    class MyLLMFactory(LLMFactory):
+        def get_llm(self, model_name: LLMAgents) -> LLM:
+            if model_name == LLMAgents.LLAMA3_8B:
+                config = LLMConfigRetriever(model_name).get_config()
+                return LLama3_8B(config)
+            else:
+                raise ValueError(f"Invalid model name: {model_name}")
+
+    my_llm_factory = MyLLMFactory()
+    my_llm = my_llm_factory.get_llm(LLMAgents.LLAMA3_8B)
+
+    The get_llm() method should be implemented by subclasses to return an instance of the LLM class.
+    """
+
     def get_llm(self, model_name: LLMAgents) -> LLM:
         if model_name == LLMAgents.LLAMA3_8B:
             config = LLMConfigRetriever(model_name).get_config()
