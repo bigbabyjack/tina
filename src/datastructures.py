@@ -9,3 +9,9 @@ class UserInput:
 @dataclass
 class QueryResponse:
     response: str
+
+
+@dataclass
+class ServiceContext:
+    user_input: UserInput
+    query_response: QueryResponse
