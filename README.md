@@ -1,2 +1,2 @@
 # TinA
-A Terminal Agent leveraging the large language model Llama3.
+A local Terminal Agent leveraging the large language model Llama3.
