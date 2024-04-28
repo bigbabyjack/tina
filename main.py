@@ -1,4 +1,5 @@
 import requests
+import argparse
 
 # Set the URL for the LLaMA model's chat API endpoint
 url = "http://127.0.0.1:11434/api/generate"
@@ -20,3 +21,9 @@ response = response.json()
 
 message_response = response["response"]
 print(message_response)
+
+
+def main():
+
+
+main()
