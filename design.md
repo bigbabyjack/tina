@@ -1,5 +1,15 @@
 # tina: the terminal agent
 
+Image of current design plan:
+
+![tina](./design_01.png)
+
+## Dev Plan 
+1. design classes: UserInput, QueryResponse, LanguageModel
+2. design contracts between classes
+3. single-turn response
+
+
 ## Introduction
 **tina** is a text-based terminal agent. It can serve a range of utilities from the command line.
 
@@ -21,6 +31,25 @@ class QueryResponse:
     response: str   
 ```
 
-As **tina** evolves, this will get more complicated.
+As **tina** evolves, this will get more complicated. Current data model:
 
+```py
+# The user inputs a query along with the command `tina`:
+@dataclass
+class UserInput:
+    query: str
 
+class QueryParser(Parser):
+    def parse(self, query: str) -> UserInput:
+
+class LLM():
+    def generate_response(self, query: UserInput) -> QueryResponse:
+
+class ResponseParser(Parser):
+    def parse(self, query_response: QueryResponse) -> str:
+
+@dataclass
+class QueryResponse:
+    query: str
+    response: str   
+```

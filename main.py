@@ -1,10 +1,10 @@
 import requests
+from llms import LLMFactory
 
 # Set the URL for the LLaMA model's chat API endpoint
 url = "http://127.0.0.1:11434/api/generate"
 
 # Set the headers for the request
-headers = {"Content-Type": "application/json"}
 
 # Set the data for the chat API request
 data = {
@@ -20,3 +20,11 @@ response = response.json()
 
 message_response = response["response"]
 print(message_response)
+
+
+def main():
+    tina = LLMFactory().get_llm("llama3:8b")
+    tina.invoke("hello world", LLMConfig())
+
+
+main()
