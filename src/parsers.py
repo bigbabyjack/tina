@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from datastructures import UserInput, QueryResponse
+from src.datastructures import UserInput, QueryResponse
 
 
 class AbstractQueryParser(ABC):

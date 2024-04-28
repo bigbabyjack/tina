@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from datastructures import UserInput, QueryResponse
+from src.datastructures import UserInput, QueryResponse
 
-from llm_configs import LLMConfig, LLMAgents, LLMConfigRetriever
+from src.llm_configs import LLMConfig, LLMAgents, LLMConfigRetriever
 
 
 class AbstractLLM(ABC):
