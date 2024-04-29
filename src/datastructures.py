@@ -1,20 +1,5 @@
 from dataclasses import dataclass
-
-
-@dataclass
-class UserInput:
-    """ "
-    The UserInput class contains data about the user's input.
-
-    At it's most basic, it can hold just a query.
-    """
-
-    query: str
-
-
-@dataclass
-class QueryResponse:
-    response: str
+from typing import Optional
 
 
 @dataclass
@@ -24,5 +9,9 @@ class ServiceContext:
     At its very core, it holds the user input and the query response.
     """
 
-    user_input: UserInput
-    query_response: QueryResponse
+    user_input: str
+    response: str
+    parsed_response: Optional[str]
+
+    def __repr__(self):
+        return f"ServiceContext(user_input={self.user_input}, response={self.response}, parsed_response={self.parsed_response})"

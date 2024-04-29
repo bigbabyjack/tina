@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from src.datastructures import UserInput, QueryResponse
 
+from src.datastructures import ServiceContext
 from src.llm_configs import (
     LanguageModelConfig,
     LanguageModelNames,
@@ -10,7 +10,7 @@ from src.llm_configs import (
 
 class AbstractLanguageModel(ABC):
     @abstractmethod
-    def invoke(self, user_input: UserInput) -> QueryResponse:
+    def invoke(self, service_context: ServiceContext) -> ServiceContext:
         pass
 
 
@@ -34,8 +34,8 @@ class LanguageModel(AbstractLanguageModel):
     def __init__(self, config: LanguageModelConfig):
         self.config = config
 
-    def invoke(self, user_input: UserInput) -> QueryResponse:
-        return QueryResponse(response=user_input.query)
+    def invoke(self, service_context: ServiceContext) -> ServiceContext:
+        return service_context
 
 
 class LLama3_8B(LanguageModel):
@@ -47,8 +47,9 @@ class LLama3_8B(LanguageModel):
     def __init__(self, config: LanguageModelConfig):
         self.config = config
 
-    def invoke(self, user_input: UserInput) -> QueryResponse:
-        return QueryResponse(response=user_input.query)
+    def invoke(self, service_context: ServiceContext) -> ServiceContext:
+        service_context.response = "hello world"
+        return service_context
 
 
 class AbstractLLMFactory(ABC):

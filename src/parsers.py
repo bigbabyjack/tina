@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-from src.datastructures import UserInput, QueryResponse
+from src.datastructures import ServiceContext
 
 
 class AbstractQueryParser(ABC):
     @abstractmethod
-    def parse(self, query: str) -> UserInput:
+    def parse(self, service_context: ServiceContext) -> ServiceContext:
         pass
 
 
@@ -28,13 +28,13 @@ class QueryParser(AbstractQueryParser):
     def __init__(self):
         pass
 
-    def parse(self, query: str) -> UserInput:
-        return UserInput(query=query)
+    def parse(self, service_context: ServiceContext) -> ServiceContext:
+        return service_context
 
 
 class AbstractResponseParser(ABC):
     @abstractmethod
-    def parse(self, response: str) -> QueryResponse:
+    def parse(self, service_context: ServiceContext) -> ServiceContext:
         pass
 
 
@@ -57,5 +57,6 @@ class ResponseParser(AbstractResponseParser):
     def __init__(self):
         pass
 
-    def parse(self, response: str) -> QueryResponse:
-        return QueryResponse(response=response)
+    def parse(self, service_context: ServiceContext) -> ServiceContext:
+        service_context.parsed_response = f"Response{ service_context.response }"
+        return service_context

@@ -1,5 +1,6 @@
 import requests
 
+from src.datastructures import ServiceContext
 from src.llms import LanguageModelNames
 from src.orchestrator import LLMOrchestrator
 
@@ -26,9 +27,13 @@ from src.orchestrator import LLMOrchestrator
 
 def main():
     query = "I am building a tool!"
-    orchestrator = LLMOrchestrator(model_name=LanguageModelNames.LLAMA3_8B)
-    query_response = orchestrator.orchestrate(query)
-    print(query_response.response)
+    service_context = ServiceContext(user_input=query, response="", parsed_response="")
+    service_context = LLMOrchestrator(
+        service_context,
+        model_name=LanguageModelNames.LLAMA3_8B,
+    ).orchestrate()
+
+    print(service_context)
 
 
 if __name__ == "__main__":
