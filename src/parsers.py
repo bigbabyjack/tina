@@ -58,5 +58,5 @@ class ResponseParser(AbstractResponseParser):
         pass
 
     def parse(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.parsed_response = f"Response{ service_context.response }"
+        service_context.parsed_response = f"response: { service_context.response }"
         return service_context
