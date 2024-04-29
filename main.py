@@ -1,5 +1,5 @@
 import requests
-from src.llms import LLMFactory, LLMAgents
+from src.llms import LLMFactory, LanguageModelNames
 from src.parsers import QueryParser
 from src.datastructures import UserInput, QueryResponse, ServiceContext
 
@@ -29,10 +29,10 @@ def main():
     parser = QueryParser()
     user_input = parser.parse(query)
     print(f"{user_input.query}")
-    tina = LLMFactory().get_llm(LLMAgents.LLAMA3_8B)
+    tina = LLMFactory().get_llm(LanguageModelNames.LLAMA3_8B)
     query_response = tina.invoke(UserInput(query=query))
     print(query_response.response)
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()

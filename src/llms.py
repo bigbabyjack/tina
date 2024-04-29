@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from src.datastructures import UserInput, QueryResponse
 
-from src.llm_configs import LLMConfig, LLMAgents, LLMConfigRetriever
+from src.llm_configs import LLMConfig, LanguageModelNames, LLMConfigRetriever
 
 
 class AbstractLLM(ABC):
@@ -49,7 +49,7 @@ class LLama3_8B(LLM):
 
 class AbstractLLMFactory(ABC):
     @abstractmethod
-    def get_llm(self, model_name: LLMAgents) -> LLM:
+    def get_llm(self, model_name: LanguageModelNames) -> LLM:
         pass
 
 
@@ -73,8 +73,14 @@ class LLMFactory(AbstractLLMFactory):
     The get_llm() method should be implemented by subclasses to return an instance of the LLM class.
     """
 
-    def get_llm(self, model_name: LLMAgents) -> LLM:
-        if model_name == LLMAgents.LLAMA3_8B:
+    def __init__(self):
+        pass
+
+    def __call__(self, model_name: LanguageModelNames) -> LLM:
+        return self.get_llm(model_name)
+
+    def get_llm(self, model_name: LanguageModelNames) -> LLM:
+        if model_name == LanguageModelNames.LLAMA3_8B:
             config = LLMConfigRetriever(model_name).get_config()
             return LLama3_8B(config)
         else:
