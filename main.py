@@ -10,11 +10,11 @@ from src.orchestrator import LLMOrchestrator
 # # Set the headers for the request
 #
 # # Set the data for the chat API request
-# data = {
-#     "model": "llama3:8b",
-#     "prompt": "I am making a CLI tool that uses Llama3 as an agent for carrying out different actions based on the user text input.",
-#     "stream": False,
-# }
+data = {
+    "model": "llama3:8b",
+    "prompt": "I am making a CLI tool that uses Llama3 as an agent for carrying out different actions based on the user text input.",
+    "stream": False,
+}
 #
 # # Send a POST request to the LLaMA model's chat API endpoint
 # response = requests.post(url, json=data)

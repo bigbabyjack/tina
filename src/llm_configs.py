@@ -2,9 +2,16 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 
+class LanguageModelFamily(StrEnum):
+    """
+    Supported language model families
+    """
+
+    LLAMA = "llama"
+
+
 class LanguageModelNames(StrEnum):
     """
-    Documentation for LanguageModelNames:
     The LanguageModelNames enum is an enum class that defines the names of the supported language models.
     """
 
@@ -14,7 +21,6 @@ class LanguageModelNames(StrEnum):
 @dataclass
 class LanguageModelConfig:
     """
-    Documentation for LanguageModelConfig:
     The LanguageModelConfig class is a dataclass that defines the configuration for a language model.
     The model_name, url, headers, and options attributes are required.
     The to_dict() method is used to convert the object to a dictionary.
@@ -28,6 +34,7 @@ class LanguageModelConfig:
     )
     """
 
+    model_family: LanguageModelFamily
     model_name: LanguageModelNames
     url: str
     headers: dict
@@ -44,7 +51,6 @@ class LanguageModelConfig:
 
 class LanguageModelConfigRetriever:
     """
-    Documentation for LanguageModelConfigRetriever:
     The LanguageModelConfigRetriever class is a class that provides a method to get a LanguageModelConfig object based on the model name.
 
     Example:
@@ -60,6 +66,7 @@ class LanguageModelConfigRetriever:
     def get_config(self) -> LanguageModelConfig:
         if self.model_name == LanguageModelNames.LLAMA3_8B:
             return LanguageModelConfig(
+                model_family_name=LanguageModelFamily.LLAMA,
                 model_name=self.model_name,
                 url="http://127.0.0.1:11434/api/generate",
                 headers={"Content-Type": "application/json"},

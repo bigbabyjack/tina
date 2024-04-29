@@ -6,11 +6,14 @@ from src.llm_configs import (
     LanguageModelNames,
     LanguageModelConfigRetriever,
 )
+from src.handlers import APIHandlerFactory
 
 
 class AbstractLanguageModel(ABC):
     @abstractmethod
-    def invoke(self, service_context: ServiceContext) -> ServiceContext:
+    def invoke(
+        self, service_context: ServiceContext, api_handler: APIHandler
+    ) -> ServiceContext:
         pass
 
 
@@ -34,7 +37,9 @@ class LanguageModel(AbstractLanguageModel):
     def __init__(self, config: LanguageModelConfig):
         self.config = config
 
-    def invoke(self, service_context: ServiceContext) -> ServiceContext:
+    def invoke(
+        self, service_context: ServiceContext, api_handler: APIHandler
+    ) -> ServiceContext:
         return service_context
 
 
@@ -46,10 +51,25 @@ class LLama3_8B(LanguageModel):
 
     def __init__(self, config: LanguageModelConfig):
         self.config = config
+        self.api_handler = APIHandlerFactory().get_handler(config.model_family)
 
-    def invoke(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.response = "hello world"
+    def invoke(
+        self, service_context: ServiceContext, api_handler: APIHandler
+    ) -> ServiceContext:
+        payload = self._build_payload(service_context)
+        service_context.response = api_handler.post_request(
+            self.config.api_url,
+            payload,
+        )
         return service_context
+
+    def _build_payload(self, service_context: ServiceContext) -> dict:
+        payload = {
+            "model": self.config.model_name,
+            "prompt": service_context.user_input,
+            "stream": True if self.config.options.get("stream") else False,
+        }
+        return payload
 
 
 class AbstractLLMFactory(ABC):
