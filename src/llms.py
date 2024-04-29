@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from json import JSONDecodeError
 
 from src.datastructures import ServiceContext
 from src.llm_configs import (
@@ -6,6 +7,7 @@ from src.llm_configs import (
     LanguageModelNames,
     LanguageModelConfigRetriever,
 )
+from src.handlers import APIHandlerFactory
 
 
 class AbstractLanguageModel(ABC):
@@ -46,10 +48,32 @@ class LLama3_8B(LanguageModel):
 
     def __init__(self, config: LanguageModelConfig):
         self.config = config
+        self.api_handler = APIHandlerFactory().get_handler(config.model_family)
 
     def invoke(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.response = "hello world"
+        # build the payload
+        payload = self._build_payload(service_context)
+        # make the request
+        try:
+            response = self.api_handler.post_request(
+                self.config.api_url,
+                payload,
+            )
+            service_context.response = response["response"]
+        except JSONDecodeError:
+            raise ValueError("Invalid JSON response")
+        except Exception as e:
+            raise e
+
         return service_context
+
+    def _build_payload(self, service_context: ServiceContext) -> dict:
+        payload = {
+            "model": self.config.model_name,
+            "prompt": service_context.user_input,
+            "stream": True if self.config.options.get("stream") else False,
+        }
+        return payload
 
 
 class AbstractLLMFactory(ABC):

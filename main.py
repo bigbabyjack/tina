@@ -10,11 +10,11 @@ from src.orchestrator import LLMOrchestrator
 # # Set the headers for the request
 #
 # # Set the data for the chat API request
-# data = {
-#     "model": "llama3:8b",
-#     "prompt": "I am making a CLI tool that uses Llama3 as an agent for carrying out different actions based on the user text input.",
-#     "stream": False,
-# }
+data = {
+    "model": "llama3:8b",
+    "prompt": "I am making a CLI tool that uses Llama3 as an agent for carrying out different actions based on the user text input.",
+    "stream": False,
+}
 #
 # # Send a POST request to the LLaMA model's chat API endpoint
 # response = requests.post(url, json=data)
@@ -25,15 +25,25 @@ from src.orchestrator import LLMOrchestrator
 # print(message_response)
 
 
+def print_process(service_context: ServiceContext) -> None:
+    print(
+        f"Input: {service_context.user_input}\n\nOutput: {service_context.parsed_response}"
+    )
+
+
 def main():
     query = "I am building a tool!"
-    service_context = ServiceContext(user_input=query, response="", parsed_response="")
+    service_context = ServiceContext(
+        user_input=query,
+        parsed_query=None,
+        response="",
+        parsed_response=None,
+    )
     service_context = LLMOrchestrator(
         service_context,
         model_name=LanguageModelNames.LLAMA3_8B,
     ).orchestrate()
-
-    print(service_context)
+    print_process(service_context)
 
 
 if __name__ == "__main__":

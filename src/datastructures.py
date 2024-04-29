@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
+from uuid import uuid4
 
 
 @dataclass
@@ -10,8 +11,11 @@ class ServiceContext:
     """
 
     user_input: str
+    parsed_query: Optional[str]
     response: str
     parsed_response: Optional[str]
 
+    _context_id: str = str(uuid4())
+
     def __repr__(self):
-        return f"ServiceContext(user_input={self.user_input}, response={self.response}, parsed_response={self.parsed_response})"
+        return f"ServiceContext(context_id={self._context_id}, user_input={self.user_input}, response={self.response}, parsed_response={self.parsed_response})"
