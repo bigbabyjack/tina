@@ -12,6 +12,13 @@ class AbstractOrchestrator(ABC):
 
 
 class LLMOrchestrator(AbstractOrchestrator):
+    """
+    Documentation for LLMOrchestrator:
+    The LLMOrchestrator class is a class that orchestrates the query parsing, LLM invocation, and response parsing.
+    It calls the QueryParser, LLMFactory, and ResponseParser to parse the query, invoke the LLM, and parse the response.
+
+    """
+
     def __init__(self, model_name: LanguageModelNames):
         self.model_name = model_name
         self.query_parser = QueryParser()
