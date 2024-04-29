@@ -11,13 +11,15 @@ class HandlerNames(StrEnum):
 
 class AbstractHandler(ABC):
     @abstractmethod
-    def post_request(self, api_url: str, payload: dict) -> Response:
+    def post_request(self, api_url: str, payload: dict) -> dict:
         pass
 
 
 class APIHandler(AbstractHandler):
-    def post_request(self, api_url: str, payload: dict) -> Response:
-        response = requests.post(api_url, json=payload)
+    def post_request(self, api_url: str, payload: dict) -> dict:
+        response = requests.post(url=api_url, json=payload)
+        response.raise_for_status()
+        response = response.json()
         return response
 
 
@@ -25,9 +27,11 @@ class LlamaAPIHandler(APIHandler):
     def __init__(self):
         super().__init__()
 
-    def post_request(self, api_url: str, payload: dict) -> Response:
+    def post_request(self, api_url: str, payload: dict) -> dict:
         self._validate_payload(payload)
-        response = requests.post(api_url, json=payload)
+        response = requests.post(url=api_url, json=payload)
+        response.raise_for_status()
+        response = response.json()
         return response
 
     def _validate_payload(self, payload: dict) -> None:
