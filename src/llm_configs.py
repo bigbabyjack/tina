@@ -2,13 +2,13 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 
-class LLMAgents(StrEnum):
+class LanguageModelNames(StrEnum):
     LLAMA3_8B = "llama3:8b"
 
 
 @dataclass
-class LLMConfig:
-    model_name: LLMAgents
+class LanguageModelConfig:
+    model_name: LanguageModelNames
     url: str
     headers: dict
     options: dict
@@ -22,13 +22,13 @@ class LLMConfig:
         }
 
 
-class LLMConfigRetriever:
-    def __init__(self, model_name: LLMAgents):
+class LanguageModelConfigRetriever:
+    def __init__(self, model_name: LanguageModelNames):
         self.model_name = model_name
 
-    def get_config(self) -> LLMConfig:
-        if self.model_name == LLMAgents.LLAMA3_8B:
-            return LLMConfig(
+    def get_config(self) -> LanguageModelConfig:
+        if self.model_name == LanguageModelNames.LLAMA3_8B:
+            return LanguageModelConfig(
                 model_name=self.model_name,
                 url="http://127.0.0.1:11434/api/generate",
                 headers={"Content-Type": "application/json"},
