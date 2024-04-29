@@ -7,7 +7,7 @@ class LanguageModelNames(StrEnum):
 
 
 @dataclass
-class LLMConfig:
+class LanguageModelConfig:
     model_name: LanguageModelNames
     url: str
     headers: dict
@@ -22,13 +22,13 @@ class LLMConfig:
         }
 
 
-class LLMConfigRetriever:
+class LanguageModelConfigRetriever:
     def __init__(self, model_name: LanguageModelNames):
         self.model_name = model_name
 
-    def get_config(self) -> LLMConfig:
+    def get_config(self) -> LanguageModelConfig:
         if self.model_name == LanguageModelNames.LLAMA3_8B:
-            return LLMConfig(
+            return LanguageModelConfig(
                 model_name=self.model_name,
                 url="http://127.0.0.1:11434/api/generate",
                 headers={"Content-Type": "application/json"},

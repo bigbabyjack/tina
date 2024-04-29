@@ -1,7 +1,7 @@
 import requests
-from src.llms import LLMFactory, LanguageModelNames
-from src.parsers import QueryParser
-from src.datastructures import UserInput, QueryResponse, ServiceContext
+
+from src.llms import LanguageModelNames
+from src.orchestrator import LLMOrchestrator
 
 # # Set the URL for the LLaMA model's chat API endpoint
 # url = "http://127.0.0.1:11434/api/generate"
@@ -25,12 +25,9 @@ from src.datastructures import UserInput, QueryResponse, ServiceContext
 
 
 def main():
-    query = "hello world"
-    parser = QueryParser()
-    user_input = parser.parse(query)
-    print(f"{user_input.query}")
-    tina = LLMFactory().get_llm(LanguageModelNames.LLAMA3_8B)
-    query_response = tina.invoke(UserInput(query=query))
+    query = "I am building a tool!"
+    orchestrator = LLMOrchestrator(model_name=LanguageModelNames.LLAMA3_8B)
+    query_response = orchestrator.orchestrate(query)
     print(query_response.response)
 
 

@@ -1,16 +1,20 @@
 from abc import ABC, abstractmethod
 from src.datastructures import UserInput, QueryResponse
 
-from src.llm_configs import LLMConfig, LanguageModelNames, LLMConfigRetriever
+from src.llm_configs import (
+    LanguageModelConfig,
+    LanguageModelNames,
+    LanguageModelConfigRetriever,
+)
 
 
-class AbstractLLM(ABC):
+class AbstractLanguageModel(ABC):
     @abstractmethod
-    def invoke(self, query: UserInput) -> QueryResponse:
+    def invoke(self, user_input: UserInput) -> QueryResponse:
         pass
 
 
-class LLM(AbstractLLM):
+class LanguageModel(AbstractLanguageModel):
     """
     Documentation for LLM:
     The LLM class is an abstract class that defines the interface for interacting with an LLM.
@@ -27,29 +31,29 @@ class LLM(AbstractLLM):
     The invoke() method should be implemented by subclasses to interact with the LLM and return the response.
     """
 
-    def __init__(self, config: LLMConfig):
+    def __init__(self, config: LanguageModelConfig):
         self.config = config
 
-    def invoke(self, query: UserInput) -> QueryResponse:
-        return QueryResponse(response="hello world")
+    def invoke(self, user_input: UserInput) -> QueryResponse:
+        return QueryResponse(response=user_input.query)
 
 
-class LLama3_8B(LLM):
+class LLama3_8B(LanguageModel):
     """
     Documentation for LLama3_8B:
     The LLama3_8B class is an implementation of the LLM class that uses the LLaMA3 8B model.
     """
 
-    def __init__(self, config: LLMConfig):
+    def __init__(self, config: LanguageModelConfig):
         self.config = config
 
-    def invoke(self, query: UserInput) -> QueryResponse:
-        return QueryResponse(response="hello world")
+    def invoke(self, user_input: UserInput) -> QueryResponse:
+        return QueryResponse(response=user_input.query)
 
 
 class AbstractLLMFactory(ABC):
     @abstractmethod
-    def get_llm(self, model_name: LanguageModelNames) -> LLM:
+    def get_llm(self, model_name: LanguageModelNames) -> LanguageModel:
         pass
 
 
@@ -76,12 +80,9 @@ class LLMFactory(AbstractLLMFactory):
     def __init__(self):
         pass
 
-    def __call__(self, model_name: LanguageModelNames) -> LLM:
-        return self.get_llm(model_name)
-
-    def get_llm(self, model_name: LanguageModelNames) -> LLM:
+    def get_llm(self, model_name: LanguageModelNames) -> LanguageModel:
         if model_name == LanguageModelNames.LLAMA3_8B:
-            config = LLMConfigRetriever(model_name).get_config()
+            config = LanguageModelConfigRetriever(model_name).get_config()
             return LLama3_8B(config)
         else:
             raise ValueError(f"Invalid model name: {model_name}")
