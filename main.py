@@ -1,4 +1,4 @@
-import requests
+import argparse
 
 from src.datastructures import ServiceContext
 from src.llms import LanguageModelNames
@@ -12,7 +12,12 @@ def print_process(service_context: ServiceContext) -> None:
 
 
 def main():
-    query = "I am building a tool!"
+    parser = argparse.ArgumentParser(description="Process input query")
+    parser.add_argument("query", type=str, nargs="+", help="Input query string")
+    args = parser.parse_args()
+
+    query = " ".join(args.query)
+
     service_context = ServiceContext(
         user_input=query,
         parsed_query=None,
