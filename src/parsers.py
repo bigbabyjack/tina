@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from argparse import ArgumentParser
 
 from src.datastructures import ServiceContext
 
@@ -7,6 +8,53 @@ class AbstractParser(ABC):
     @abstractmethod
     def parse(self, service_context: ServiceContext) -> ServiceContext:
         pass
+
+
+class InputArgumentParser(AbstractParser):
+    """
+    Documentation for InputArgumentParser:
+    The InputArgumentParser class is an abstract class that defines the interface for parsing input arguments.
+    The parse() method should be implemented by subclasses to parse the input arguments and return a ServiceContext object.
+
+    Example:
+    class MyInputParser(InputArgumentParser):
+        def parse(self, service_context: ServiceContext) -> ServiceContext:
+            return service_context
+
+    my_input_parser = MyInputParser()
+    service_context = my_input_parser.parse(service_context)
+    print(service_context)
+    """
+
+    def __init__(self):
+        self.parser = ArgumentParser()
+        self.config = {
+            "query": {
+                "flags": ["query"],
+                "kwargs": {"type": str, "nargs": "+", "help": "Input query string"},
+            },
+            "code": {
+                "flags": ["-c", "--code"],
+                "kwargs": {"action": "store_true", "help": "Code mode"},
+            },
+            "search": {
+                "flags": ["-s", "--search"],
+                "kwargs": {"action": "store_true", "help": "Search mode"},
+            },
+        }
+        self._add_arguments()
+
+    def parse(self, service_context: ServiceContext) -> ServiceContext:
+        service_context.input_query = " ".join(self._parse_input_args()["query"])
+        service_context.input_arguments = self._parse_input_args()
+        return service_context
+
+    def _add_arguments(self):
+        for _, arg_config in self.config.items():
+            self.parser.add_argument(*arg_config["flags"], **arg_config["kwargs"])
+
+    def _parse_input_args(self) -> dict:
+        return vars(self.parser.parse_args())
 
 
 class QueryParser(AbstractParser):
@@ -58,5 +106,5 @@ class ResponseParser(AbstractParser):
         pass
 
     def parse(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.parsed_response = f"response: { service_context.response }"
+        service_context.parsed_response = f"Tina: { service_context.response }"
         return service_context
