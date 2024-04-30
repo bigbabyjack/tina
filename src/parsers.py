@@ -3,13 +3,13 @@ from abc import ABC, abstractmethod
 from src.datastructures import ServiceContext
 
 
-class AbstractQueryParser(ABC):
+class AbstractParser(ABC):
     @abstractmethod
     def parse(self, service_context: ServiceContext) -> ServiceContext:
         pass
 
 
-class QueryParser(AbstractQueryParser):
+class QueryParser(AbstractParser):
     """
     Documentation for QueryParser:
     The QueryParser class is an abstract class that defines the interface for parsing user queries.
@@ -38,7 +38,7 @@ class AbstractResponseParser(ABC):
         pass
 
 
-class ResponseParser(AbstractResponseParser):
+class ResponseParser(AbstractParser):
     """
     Documentation for ResponseParser:
     The ResponseParser class is an abstract class that defines the interface for parsing query responses.
