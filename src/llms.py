@@ -70,7 +70,9 @@ class LLama3_8B(LanguageModel):
     def _build_payload(self, service_context: ServiceContext) -> dict:
         payload = {
             "model": self.config.model_name,
-            "prompt": service_context.input_query,
+            "prompt": service_context.parsed_query
+            if service_context.parsed_query
+            else service_context.input_query,
             "stream": True if self.config.options.get("stream") else False,
         }
         return payload

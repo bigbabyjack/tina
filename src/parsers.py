@@ -6,7 +6,7 @@ from src.datastructures import ServiceContext
 
 class AbstractParser(ABC):
     @abstractmethod
-    def parse(self, service_context: ServiceContext) -> ServiceContext:
+    def parse(self, context: ServiceContext) -> ServiceContext:
         pass
 
 
@@ -44,10 +44,10 @@ class InputArgumentParser(AbstractParser):
         }
         self._add_arguments()
 
-    def parse(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.input_query = " ".join(self._parse_input_args()["query"])
-        service_context.input_arguments = self._parse_input_args()
-        return service_context
+    def parse(self, context: ServiceContext) -> ServiceContext:
+        context.input_query = " ".join(self._parse_input_args()["query"])
+        context.input_arguments = self._parse_input_args()
+        return context
 
     def _add_arguments(self):
         for _, arg_config in self.config.items():
@@ -76,13 +76,21 @@ class QueryParser(AbstractParser):
     def __init__(self):
         pass
 
-    def parse(self, service_context: ServiceContext) -> ServiceContext:
-        return service_context
+    def parse(self, context: ServiceContext) -> ServiceContext:
+        if context.input_arguments["code"]:
+            context.parsed_query = f"Help me with a question related to code. You should only return code and nothing else: { context.input_query }"
+        # TODO: Execute an external action here: what is a scalable way to define this?
+        elif context.input_arguments["search"]:
+            context.requires_llm = False
+            context.parsed_query = f"{ context.input_query }"
+        else:
+            context.parsed_query = f"{ context.input_query }"
+        return context
 
 
 class AbstractResponseParser(ABC):
     @abstractmethod
-    def parse(self, service_context: ServiceContext) -> ServiceContext:
+    def parse(self, context: ServiceContext) -> ServiceContext:
         pass
 
 
@@ -105,6 +113,6 @@ class ResponseParser(AbstractParser):
     def __init__(self):
         pass
 
-    def parse(self, service_context: ServiceContext) -> ServiceContext:
-        service_context.parsed_response = f"Tina: { service_context.response }"
-        return service_context
+    def parse(self, context: ServiceContext) -> ServiceContext:
+        context.parsed_response = f"Tina:\n{ context.response }"
+        return context
