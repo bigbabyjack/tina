@@ -11,10 +11,30 @@ def print_process(service_context: ServiceContext) -> None:
     )
 
 
+def process_arguments(args):
+    print("Processing arguments:")
+    for arg, value in vars(args).items():
+        print(f"{arg}: {value}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Process input query")
-    parser.add_argument("query", type=str, nargs="+", help="Input query string")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Provides detailed information about the request.",
+    )
+    parser.add_argument(
+        "-c", "--code", action="store_true", help="Indicates a code request"
+    )
+    parser.add_argument(
+        "-s", "--search", action="store_true", help="Indicates a web search request"
+    )
+    parser.add_argument("query", type=str, nargs="+",
+                        help="Input query string")
     args = parser.parse_args()
+    process_arguments(args)
 
     query = " ".join(args.query)
 
