@@ -16,6 +16,7 @@ class ServiceContext:
     response: str
     parsed_response: Optional[str]
 
+    requires_llm: bool = True
     _context_id: str = str(uuid4())
 
     def __repr__(self):

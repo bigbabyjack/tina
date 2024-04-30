@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from src.datastructures import ServiceContext
 from src.llms import LLMFactory, LanguageModelNames
 from src.parsers import QueryParser, ResponseParser, InputArgumentParser
+from src.executors import CommandExecutor
 
 
 class AbstractOrchestrator(ABC):
@@ -21,7 +22,7 @@ class LLMOrchestrator(AbstractOrchestrator):
 
     def __init__(self, service_context: ServiceContext, model_name: LanguageModelNames):
         self.model_name = model_name
-        self.InputParser = InputArgumentParser()
+        self.input_parser = InputArgumentParser()
         self.query_parser = QueryParser()
         self.llm = LLMFactory().get_llm(self.model_name)
         self.response_parser = ResponseParser()
@@ -29,9 +30,12 @@ class LLMOrchestrator(AbstractOrchestrator):
 
     def orchestrate(self) -> ServiceContext:
         try:
-            self.service_context = self.InputParser.parse(self.service_context)
+            self.service_context = self.input_parser.parse(self.service_context)
             self.service_context = self.query_parser.parse(self.service_context)
-            self.service_context = self.llm.invoke(self.service_context)
+            if self.service_context.requires_llm:
+                self.service_context = self.llm.invoke(self.service_context)
+            else:
+                self.command_executor = CommandExecutor().execute(self.service_context)
             self.service_context = self.response_parser.parse(self.service_context)
         except Exception as e:
             print(e)

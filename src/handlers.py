@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import requests
-from requests import Response
 from enum import StrEnum
 
 
@@ -9,13 +8,13 @@ class HandlerNames(StrEnum):
     LLAMA = "llama"
 
 
-class AbstractHandler(ABC):
+class AbstractAPIHandler(ABC):
     @abstractmethod
     def post_request(self, api_url: str, payload: dict) -> dict:
         pass
 
 
-class APIHandler(AbstractHandler):
+class BaseAPIHandler(AbstractAPIHandler):
     def post_request(self, api_url: str, payload: dict) -> dict:
         response = requests.post(url=api_url, json=payload)
         response.raise_for_status()
@@ -23,7 +22,7 @@ class APIHandler(AbstractHandler):
         return response
 
 
-class LlamaAPIHandler(APIHandler):
+class LlamaAPIHandler(BaseAPIHandler):
     def __init__(self):
         super().__init__()
 
@@ -41,14 +40,14 @@ class LlamaAPIHandler(APIHandler):
 
 class AbstractHandlerFactory(ABC):
     @abstractmethod
-    def get_handler(self, handler_name: str) -> AbstractHandler:
+    def get_handler(self, handler_name: str) -> AbstractAPIHandler:
         pass
 
 
 class APIHandlerFactory(AbstractHandlerFactory):
-    def get_handler(self, handler_name: str) -> AbstractHandler:
+    def get_handler(self, handler_name: str) -> AbstractAPIHandler:
         if handler_name == HandlerNames.API:
-            return APIHandler()
+            return BaseAPIHandler()
         elif handler_name == HandlerNames.LLAMA:
             return LlamaAPIHandler()
         else:
