@@ -1,5 +1,10 @@
-# TinA
+# tina
 A local Terminal Agent leveraging the large language model Llama3.
+
+## Design
+Image of current design plan:
+
+![tina](./design_01.png)
 
 ## Dev Roadmap
 - [x] add user input from stdin
