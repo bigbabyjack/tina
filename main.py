@@ -1,3 +1,6 @@
+import logging
+
+from src.logger import setup_logging, timemethod
 from src.datastructures import ServiceContext
 from src.llms import LanguageModelNames
 from src.orchestrator import LLMOrchestrator
@@ -5,8 +8,13 @@ from src.planners import OrchestratorPlanner
 from src.parsers import InputArgumentParser
 
 
+@timemethod
 def main():
+    setup_logging()
+    logging.debug("Starting the program...")
+
     context = ServiceContext(
+        logger=logging.getLogger(__name__),
         input_query="",
         input_arguments={},
         parsed_query="",

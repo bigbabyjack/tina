@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import subprocess
 
+from src.logger import timemethod
 from src.datastructures import ServiceContext
 
 
@@ -24,10 +25,14 @@ class CommandExecutor(AbstractExecutor):
     service_context = my_command_executor.execute(service_context)
     """
 
+    @timemethod
     def execute(self, context: ServiceContext) -> ServiceContext:
+        context.logger.debug(f"Checking input arguments: {context.input_arguments}")
         if context.input_arguments["search"]:
+            context.logger.debug(f"Search query identified")
             query = context.input_query
             self.open_google_search(query)
+        context.logger.info(f"Searching: {context.input_query}")
         context.response = f"googling: {context.input_query}"
         return context
 

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from json import JSONDecodeError
 
+from src.logger import timemethod
 from src.datastructures import ServiceContext
 from src.llm_configs import (
     LanguageModelConfig,

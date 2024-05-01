@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 import requests
 from enum import StrEnum
 
+from src.logger import timemethod
+
 
 class HandlerNames(StrEnum):
     API = "api"
@@ -15,6 +17,7 @@ class AbstractAPIHandler(ABC):
 
 
 class BaseAPIHandler(AbstractAPIHandler):
+    @timemethod
     def post_request(self, api_url: str, payload: dict) -> dict:
         response = requests.post(url=api_url, json=payload)
         response.raise_for_status()
@@ -26,6 +29,7 @@ class LlamaAPIHandler(BaseAPIHandler):
     def __init__(self):
         super().__init__()
 
+    @timemethod
     def post_request(self, api_url: str, payload: dict) -> dict:
         self._validate_payload(payload)
         response = requests.post(url=api_url, json=payload)

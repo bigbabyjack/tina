@@ -1,3 +1,5 @@
+import logging
+
 from dataclasses import dataclass
 from typing import Optional
 from uuid import uuid4
@@ -17,6 +19,7 @@ class ServiceContext:
     At its very core, it holds the user input and the query response.
     """
 
+    logger: logging.Logger
     input_query: str
     input_arguments: dict
     parsed_query: Optional[str]
