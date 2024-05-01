@@ -7,3 +7,6 @@ class OrchestrationSteps(StrEnum):
     LLM_INVOCATION = "llm_invocation"
     ACTION_EXECUTION = "action_execution"
     RESPONSE_PARSING = "response_parsing"
+
+    def __repr__(self) -> str:
+        return self.value

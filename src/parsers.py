@@ -1,7 +1,15 @@
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
+from enum import StrEnum
 
 from src.datastructures import ServiceContext
+
+
+class InputArguments(StrEnum):
+    QUERY = "query"
+    CODE = "code"
+    SEARCH = "search"
+    VERBOSE = "verbose"
 
 
 class AbstractParser(ABC):
@@ -10,43 +18,41 @@ class AbstractParser(ABC):
         pass
 
 
-class InputArgumentParser(AbstractParser):
+class InputArgumentParser:
     """
     Documentation for InputArgumentParser:
-    The InputArgumentParser class is an abstract class that defines the interface for parsing input arguments.
+    This class defines the interface for parsing input arguments.
     The parse() method should be implemented by subclasses to parse the input arguments and return a ServiceContext object.
-
-    Example:
-    class MyInputParser(InputArgumentParser):
-        def parse(self, service_context: ServiceContext) -> ServiceContext:
-            return service_context
-
-    my_input_parser = MyInputParser()
-    service_context = my_input_parser.parse(service_context)
-    print(service_context)
     """
 
     def __init__(self):
-        self.parser = ArgumentParser()
+        self.parser = ArgumentParser(
+            description="Parse input arguments for the application."
+        )
         self.config = {
-            "query": {
+            InputArguments.QUERY: {
                 "flags": ["query"],
                 "kwargs": {"type": str, "nargs": "+", "help": "Input query string"},
             },
-            "code": {
+            InputArguments.CODE: {
                 "flags": ["-c", "--code"],
                 "kwargs": {"action": "store_true", "help": "Code mode"},
             },
-            "search": {
+            InputArguments.SEARCH: {
                 "flags": ["-s", "--search"],
                 "kwargs": {"action": "store_true", "help": "Search mode"},
+            },
+            InputArguments.VERBOSE: {
+                "flags": ["-v", "--verbose"],
+                "kwargs": {"action": "store_true", "help": "Output verbose logs"},
             },
         }
         self._add_arguments()
 
     def parse(self, context: ServiceContext) -> ServiceContext:
-        context.input_query = " ".join(self._parse_input_args()["query"])
-        context.input_arguments = self._parse_input_args()
+        args = self._parse_input_args()
+        context.input_query = " ".join(args.get("query", []))
+        context.input_arguments = args
         return context
 
     def _add_arguments(self):
@@ -77,13 +83,16 @@ class QueryParser(AbstractParser):
         pass
 
     def parse(self, context: ServiceContext) -> ServiceContext:
-        if context.input_arguments["code"]:
+        context.logger.info(f"Parsing input query: {context.input_query}")
+        if context.input_arguments[InputArguments.CODE]:
+            context.logger.info(f"Code mode detected")
             context.parsed_query = f"Help me with a question related to code. You should only return code and nothing else: { context.input_query }"
         # TODO: Execute an external action here: what is a scalable way to define this?
-        elif context.input_arguments["search"]:
-            context.requires_llm = False
+        elif context.input_arguments[InputArguments.SEARCH]:
+            context.logger.info(f"Search mode detected")
             context.parsed_query = f"{ context.input_query }"
         else:
+            context.logger.info(f"Default mode detected")
             context.parsed_query = f"{ context.input_query }"
         return context
 

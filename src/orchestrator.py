@@ -19,10 +19,13 @@ class LLMOrchestrator(AbstractOrchestrator):
         self.service_context = service_context
 
     def orchestrate(self) -> ServiceContext:
+        self.service_context.logger.info("Orchestrating service...")
         for step in self.service_context.orchestration_plan.plan:
+            self.service_context.logger.info(f"Orchestrating step: {step}")
             if step == OrchestrationSteps.QUERY_PARSING:
                 self.query_parser = QueryParser()
-                self.service_context = self.query_parser.parse(self.service_context)
+                self.service_context = self.query_parser.parse(
+                    self.service_context)
             elif step == OrchestrationSteps.LLM_INVOCATION:
                 self.llm = LLMFactory().get_llm(self.model_name)
                 self.service_context = self.llm.invoke(self.service_context)
@@ -30,5 +33,9 @@ class LLMOrchestrator(AbstractOrchestrator):
                 self.command_executor = CommandExecutor().execute(self.service_context)
             elif step == OrchestrationSteps.RESPONSE_PARSING:
                 self.response_parser = ResponseParser()
-                self.service_context = self.response_parser.parse(self.service_context)
+                self.service_context = self.response_parser.parse(
+                    self.service_context)
+        self.service_context.logger.info(
+            f"Orchestrating service complete with plan: {self.service_context.orchestration_plan}"
+        )
         return self.service_context

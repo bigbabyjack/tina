@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -16,6 +18,12 @@ class LanguageModelNames(StrEnum):
     """
 
     LLAMA3_8B = "llama3:8b"
+
+
+class AbstractLanguageModelConfig(ABC):
+    @abstractmethod
+    def to_dict(self) -> dict:
+        pass
 
 
 @dataclass
@@ -48,6 +56,12 @@ class LanguageModelConfig:
             "api_url": self.api_url,
             "options": self.options,
         }
+
+
+class AbstractLanguageModelConfigRetriever(ABC):
+    @abstractmethod
+    def get_config(self) -> LanguageModelConfig:
+        pass
 
 
 class LanguageModelConfigRetriever:
