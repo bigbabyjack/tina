@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from uuid import uuid4
 
-from src.planners import OrchestrationSteps
+from src.constants import OrchestrationSteps
 
 
 @dataclass
