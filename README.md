@@ -15,4 +15,5 @@ Image of current design plan:
 - [ ] add system for prompts
 - [ ] multiturn?
 - [ ] introduce a second, faster model for quicker iteration
+- [ ] add streaming capability
 - [ ] ...
