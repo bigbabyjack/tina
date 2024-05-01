@@ -5,6 +5,7 @@ from src.datastructures import ServiceContext, OrchestrationPlan
 
 
 class OrchestrationSteps(StrEnum):
+    INPUT_ARGUMENT_PARSING = "input_argument_parsing"
     QUERY_PARSING = "query_parsing"
     LLM_INVOCATION = "llm_invocation"
     ACTION_EXECUTION = "action_execution"
