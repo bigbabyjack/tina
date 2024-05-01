@@ -11,7 +11,7 @@ Image of current design plan:
 - [x] define an action for tina to carry out: display code in a single line
 - [x] define an action for tina to carry out: search google
 - [x] implement planner and clean up orchestration using claude suggestions
-- [ ] add logging
+- [x] add logging
 - [ ] add system for prompts
 - [ ] multiturn?
 - [ ] introduce a second, faster model for quicker iteration
