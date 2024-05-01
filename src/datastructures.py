@@ -2,6 +2,13 @@ from dataclasses import dataclass
 from typing import Optional
 from uuid import uuid4
 
+from src.constants import OrchestrationSteps
+
+
+@dataclass
+class OrchestrationPlan:
+    plan: list[OrchestrationSteps]
+
 
 @dataclass
 class ServiceContext:
@@ -15,8 +22,8 @@ class ServiceContext:
     parsed_query: Optional[str]
     response: str
     parsed_response: Optional[str]
+    orchestration_plan: OrchestrationPlan
 
-    requires_llm: bool = True
     _context_id: str = str(uuid4())
 
     def __repr__(self):
