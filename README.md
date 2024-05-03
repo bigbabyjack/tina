@@ -6,6 +6,11 @@ Image of current design plan:
 
 ![tina](./design_01.png)
 
+## Supported Models
+- LlaMa3:8B
+- gemma:2B
+- Mixtral:8x7B
+
 ## Dev Roadmap
 - [x] add user input from stdin
 - [x] define an action for tina to carry out: display code in a single line
