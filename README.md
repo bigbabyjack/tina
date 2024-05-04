@@ -8,7 +8,7 @@
 - Make: `brew install make`
     
 ## Quickstart
-Run the setup script `make setup`
+Run the setup script `make setup`. You will need to enter your root user password, as the script will create a symlink in your /user/local/bin directory.
 
 `tina` is prompted by calling her name, and has three different "modes":
 ```
@@ -23,6 +23,10 @@ Run the setup script `make setup`
 > tina -s when is the f1 race today?
 ```
 For help, run `tina --help` or `tina -h`.
+
+Example:
+
+![mov example](./static/tina.gif)
 
 ## Supported Ollama Models
 - LlaMa3:8B
