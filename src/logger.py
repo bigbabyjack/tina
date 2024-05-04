@@ -1,7 +1,6 @@
 import time
 import logging
 from functools import wraps
-import os
 
 
 def setup_logging(logging_level=logging.DEBUG, log_to_console=False, log_to_file=True):
@@ -12,7 +11,7 @@ def setup_logging(logging_level=logging.DEBUG, log_to_console=False, log_to_file
     logging.basicConfig(
         level=logging_level,
         format=log_format,
-        handlers=[logging.FileHandler("application.log")],
+        handlers=[logging.FileHandler("./logs/application.log")],
     )  # Default handler for file output
 
     # Conditionally add console output
@@ -39,7 +38,8 @@ def timemethod(func):
         result = func(*args, **kwargs)  # Call the function
         end_time = time.time()  # Record the end time
         elapsed_time = end_time - start_time  # Calculate elapsed time
-        logging.info(f"{func.__name__} took {elapsed_time:.4f} seconds to complete.")
+        logging.info(
+            f"{func.__name__} took {elapsed_time:.4f} seconds to complete.")
         return result
 
     return wrapper

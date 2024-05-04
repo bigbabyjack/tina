@@ -1,10 +1,28 @@
 # tina
-A local Terminal Agent leveraging the large language model Llama3.
+`tina` is a CLI for interacting with Ollama. It currently supports 3 different models, each with varying size. The largest model is **mixtral:8x7B**, which requires significant vRAM. The next largest model is LlaMa3:8B, and the smallest model is Phi3, which has 3.8B parameters.
 
 ## Requirements
 - [Ollama](https://ollama.com/)
 - One of the [supported models](#supported-ollama-models)
 - [Python3](https://www.python.org/downloads/)
+- Make: `brew install make`
+    
+## Quickstart
+Run the setup script `make setup`
+
+`tina` is prompted by calling her name, and has three different "modes":
+```
+# standard mode
+> tina write a poem about language models
+
+# code mode, which will only return code in markdown style
+# some smaller models may return text as well
+> tina -c how do i write a for loop in python?
+
+# search mode, which searches google
+> tina -s when is the f1 race today?
+```
+For help, run `tina --help` or `tina -h`.
 
 ## Supported Ollama Models
 - LlaMa3:8B
