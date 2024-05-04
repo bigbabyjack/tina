@@ -4,12 +4,12 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 
-class LanguageModelFamily(StrEnum):
+class LanguageModelProviders(StrEnum):
     """
     Supported language model families
     """
 
-    LLAMA = "llama"
+    OLLAMA = "ollama"
 
 
 class LanguageModelNames(StrEnum):
@@ -18,6 +18,8 @@ class LanguageModelNames(StrEnum):
     """
 
     LLAMA3_8B = "llama3:8b"
+    MIXTRAL_7B = "mixtral:8x7b"
+    PHI3 = "phi3:latest"
 
 
 class AbstractLanguageModelConfig(ABC):
@@ -42,7 +44,7 @@ class LanguageModelConfig:
     )
     """
 
-    model_family: LanguageModelFamily
+    model_provider: LanguageModelProviders
     model_name: LanguageModelNames
     api_url: str
     headers: dict
@@ -51,7 +53,7 @@ class LanguageModelConfig:
     def to_dict(self) -> dict:
         return {
             "headers": self.headers,
-            "model_family": self.model_family,
+            "model_family": self.model_provider,
             "model_name": self.model_name,
             "api_url": self.api_url,
             "options": self.options,
@@ -81,7 +83,29 @@ class LanguageModelConfigRetriever:
     def get_config(self) -> LanguageModelConfig:
         if self.model_name == LanguageModelNames.LLAMA3_8B:
             return LanguageModelConfig(
-                model_family=LanguageModelFamily.LLAMA,
+                model_provider=LanguageModelProviders.OLLAMA,
+                model_name=self.model_name,
+                api_url="http://127.0.0.1:11434/api/generate",
+                headers={"Content-Type": "application/json"},
+                options={
+                    "model": self.model_name,
+                    "stream": False,
+                },
+            )
+        elif self.model_name == LanguageModelNames.MIXTRAL_7B:
+            return LanguageModelConfig(
+                model_provider=LanguageModelProviders.OLLAMA,
+                model_name=self.model_name,
+                api_url="http://127.0.0.1:11434/api/generate",
+                headers={"Content-Type": "application/json"},
+                options={
+                    "model": self.model_name,
+                    "stream": False,
+                },
+            )
+        elif self.model_name == LanguageModelNames.PHI3:
+            return LanguageModelConfig(
+                model_provider=LanguageModelProviders.OLLAMA,
                 model_name=self.model_name,
                 api_url="http://127.0.0.1:11434/api/generate",
                 headers={"Content-Type": "application/json"},

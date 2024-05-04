@@ -41,7 +41,7 @@ class LanguageModel(AbstractLanguageModel):
         return service_context
 
 
-class LLama3_8B(LanguageModel):
+class OllamaLanguageModel(LanguageModel):
     """
     Documentation for LLama3_8B:
     The LLama3_8B class is an implementation of the LLM class that uses the LLaMA3 8B model.
@@ -49,7 +49,7 @@ class LLama3_8B(LanguageModel):
 
     def __init__(self, config: LanguageModelConfig):
         self.config = config
-        self.api_handler = APIHandlerFactory().get_handler(config.model_family)
+        self.api_handler = APIHandlerFactory().get_handler(config.model_provider)
 
     def invoke(self, service_context: ServiceContext) -> ServiceContext:
         # build the payload
@@ -111,6 +111,12 @@ class LLMFactory(AbstractLLMFactory):
     def get_llm(self, model_name: LanguageModelNames) -> LanguageModel:
         if model_name == LanguageModelNames.LLAMA3_8B:
             config = LanguageModelConfigRetriever(model_name).get_config()
-            return LLama3_8B(config)
+            return OllamaLanguageModel(config)
+        if model_name == LanguageModelNames.MIXTRAL_7B:
+            config = LanguageModelConfigRetriever(model_name).get_config()
+            return OllamaLanguageModel(config)
+        if model_name == LanguageModelNames.PHI3:
+            config = LanguageModelConfigRetriever(model_name).get_config()
+            return OllamaLanguageModel(config)
         else:
             raise ValueError(f"Invalid model name: {model_name}")

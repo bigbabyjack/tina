@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 import requests
 from enum import StrEnum
 
+from src.llm_configs import LanguageModelProviders
 from src.logger import timemethod
 
 
 class HandlerNames(StrEnum):
     API = "api"
-    LLAMA = "llama"
+    OLLAMA = "ollama"
 
 
 class AbstractAPIHandler(ABC):
@@ -25,7 +26,7 @@ class BaseAPIHandler(AbstractAPIHandler):
         return response
 
 
-class LlamaAPIHandler(BaseAPIHandler):
+class OllamaAPIHandler(BaseAPIHandler):
     def __init__(self):
         super().__init__()
 
@@ -44,15 +45,13 @@ class LlamaAPIHandler(BaseAPIHandler):
 
 class AbstractHandlerFactory(ABC):
     @abstractmethod
-    def get_handler(self, handler_name: str) -> AbstractAPIHandler:
+    def get_handler(self, model_provider: LanguageModelProviders) -> AbstractAPIHandler:
         pass
 
 
 class APIHandlerFactory(AbstractHandlerFactory):
-    def get_handler(self, handler_name: str) -> AbstractAPIHandler:
-        if handler_name == HandlerNames.API:
-            return BaseAPIHandler()
-        elif handler_name == HandlerNames.LLAMA:
-            return LlamaAPIHandler()
+    def get_handler(self, model_provider: LanguageModelProviders) -> AbstractAPIHandler:
+        if model_provider == LanguageModelProviders.OLLAMA:
+            return OllamaAPIHandler()
         else:
-            raise ValueError(f"Invalid handler name: {handler_name}")
+            raise ValueError(f"Invalid handler name: {model_provider}")

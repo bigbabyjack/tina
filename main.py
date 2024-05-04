@@ -33,7 +33,7 @@ def main():
     context.logger.debug("Starting orchestration...")
     context = LLMOrchestrator(
         service_context=context,
-        model_name=LanguageModelNames.LLAMA3_8B,
+        model_name=LanguageModelNames.PHI3,
     ).orchestrate()
     context.logger.debug("Orchestration completed")
     context.logger.debug(f"Final service context: {context}")
