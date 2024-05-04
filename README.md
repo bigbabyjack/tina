@@ -3,7 +3,7 @@
 
 ## Requirements
 - [Ollama](https://ollama.com/)
-- One of the [supported models](#supported-ollama-models)
+- One of the [supported models](#supported-ollama-models) installed from Ollama.
 - [Python3](https://www.python.org/downloads/)
 - Make: `brew install make`
     
