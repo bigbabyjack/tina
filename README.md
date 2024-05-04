@@ -4,7 +4,7 @@ A local Terminal Agent leveraging the large language model Llama3.
 ## Design
 Image of current design plan:
 
-![tina](./design_01.png)
+![tina](./static/design_01.png)
 
 ## Supported Models
 - LlaMa3:8B
