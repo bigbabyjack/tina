@@ -1,14 +1,14 @@
 # tina
 A local Terminal Agent leveraging the large language model Llama3.
 
-## Design
-Image of current design plan:
+## Requirements
+- [Ollama](https://ollama.com/)
+- One of the [supported models](#supported-ollama-models)
+- [Python3](https://www.python.org/downloads/)
 
-![tina](./static/design_01.png)
-
-## Supported Models
+## Supported Ollama Models
 - LlaMa3:8B
-- gemma:2B
+- Phi3:Latest
 - Mixtral:8x7B
 
 ## Dev Roadmap
@@ -17,7 +17,7 @@ Image of current design plan:
 - [x] define an action for tina to carry out: search google
 - [x] implement planner and clean up orchestration using claude suggestions
 - [x] add logging
-- [ ] introduce a second, faster model for quicker iteration
+- [x] introduce a second, faster model for quicker iteration
 - [ ] add system for prompts
 - [ ] multiturn?
 - [ ] add streaming capability
