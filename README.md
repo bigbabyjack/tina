@@ -44,3 +44,6 @@ Example:
 - [ ] multiturn?
 - [ ] add streaming capability
 - [ ] ...
+
+## Contributing
+WIP. Let me know if you want to contribute.
